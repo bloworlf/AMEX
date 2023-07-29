@@ -29,7 +29,9 @@ fun GuestItem(
         mutableStateOf(guestModel.isSelected)
     }
     Row(
-        modifier = Modifier.clickable {
+        modifier = Modifier
+            .padding(start = 16.dp, end = 16.dp)
+            .clickable {
             checked.value = !checked.value
             guestModel.isSelected = !guestModel.isSelected
             onSelected(guestModel)

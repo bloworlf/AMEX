@@ -54,10 +54,8 @@ import io.drdroid.amex.utils.Utils
 fun AppBar(
     title: String,
     scrollBehavior: TopAppBarScrollBehavior,
-//    navController: NavHostController,
     navigationActions: AppNavigationActions
 ) {
-//    val scrollState = rememberScrollState()
     TopAppBar(
         title = {
             Text(
@@ -75,8 +73,6 @@ fun AppBar(
 //                    .fillMaxHeight()
                     .padding(start = 12.dp)
                     .clickable {
-//                        onNavigationIconClick()
-//                        navController.popBackStack()
                         navigationActions.navigateToGuest()
                     },
                 tint = Color.Blue,
@@ -84,12 +80,9 @@ fun AppBar(
                 contentDescription = ""
             )
         },
-//        scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
         scrollBehavior = scrollBehavior,
         modifier = Modifier
-//            .verticalScroll(scrollState)
             .background(color = Color.White),
-//        elevation = AppBarDefaults.TopAppBarElevation
     )
 }
 
@@ -220,7 +213,7 @@ fun AppNavGraph(
                         Column(modifier = Modifier.weight(9f)) {
                             Header(
                                 text = "Reservation Needed",
-                                color = Color.White
+                                textColor = Color.White
                             )
                             Spacer(modifier = Modifier.height(12.dp))
                             Text(

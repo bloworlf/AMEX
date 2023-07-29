@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,10 +26,19 @@ fun Guests(
 ) {
     Column(
         modifier = modifier
-            .padding(16.dp)
-            .fillMaxSize()
+//            .scrollable(
+//                state = rememberScrollState(),
+//                orientation = Orientation.Vertical
+//            )
+//            .padding(start = 16.dp, end = 16.dp)
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.SpaceBetween
     ) {
-        Reservations(guests = clients, onValueChanged = onValueChanged)
+        Reservations(
+            modifier = Modifier.weight(1f),
+            guests = clients,
+            onValueChanged = onValueChanged
+        )
         Spacer(modifier = Modifier.height(8.dp))
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
