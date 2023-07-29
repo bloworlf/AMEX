@@ -31,6 +31,8 @@ fun GuestItem(
     Row(
         modifier = Modifier.clickable {
             checked.value = !checked.value
+            guestModel.isSelected = !guestModel.isSelected
+            onSelected(guestModel)
         },
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically

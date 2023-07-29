@@ -2,43 +2,69 @@ package io.drdroid.amex.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import io.drdroid.amex.R
+import io.drdroid.amex.navigation.AppNavigationActions
+import io.drdroid.amex.navigation.Destinations
+import io.drdroid.amex.ui.confirmation.Confirmation
+import io.drdroid.amex.ui.conflict.Conflict
+import io.drdroid.amex.ui.select_guests.Guests
+import io.drdroid.amex.utils.Utils
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppBar(
     title: String,
     scrollBehavior: TopAppBarScrollBehavior,
-    onNavigationIconClick: () -> Unit
+//    navController: NavHostController,
+    navigationActions: AppNavigationActions
 ) {
-    val scrollState = rememberScrollState()
+//    val scrollState = rememberScrollState()
     TopAppBar(
         title = {
             Text(
                 text = title,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(end = 12.dp),
                 color = Color(0xFF00233C),
                 textAlign = TextAlign.Center
             )
@@ -47,36 +73,169 @@ fun AppBar(
             Icon(
                 modifier = Modifier
 //                    .fillMaxHeight()
-                    .padding(12.dp)
+                    .padding(start = 12.dp)
                     .clickable {
-                        onNavigationIconClick()
+//                        onNavigationIconClick()
+//                        navController.popBackStack()
+                        navigationActions.navigateToGuest()
                     },
                 tint = Color.Blue,
                 painter = painterResource(id = R.drawable.arrow_back),
                 contentDescription = ""
             )
         },
-//        navigationIcon = {
-//            IconButton(onClick = onNavigationIconClick) {
-//                Icon(
-//                    tint = Color.Blue,
-//                    imageVector = ImageVector.vectorResource(id = R.drawable.arrow_back), // Replace with your vector drawable
-//                    contentDescription = "Menu Icon"
-//                )
-//            }
-//        },
 //        scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
         scrollBehavior = scrollBehavior,
         modifier = Modifier
 //            .verticalScroll(scrollState)
             .background(color = Color.White),
-//        colors = TopAppBarColors(
-//            containerColor = Color.White,
-//            scrolledContainerColor = Color.White,
-//            navigationIconContentColor = Color.White,
-//            titleContentColor = Color.White,
-//            actionIconContentColor = Color.White,
-//            ),
 //        elevation = AppBarDefaults.TopAppBarElevation
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AppNavGraph(
+    navController: NavHostController = rememberNavController()
+) {
+    val currentNavBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = currentNavBackStackEntry?.destination?.route ?: Destinations.GUESTS
+    val navigationActions = remember(navController) {
+        AppNavigationActions(navController)
+    }
+
+    var guests by remember { mutableStateOf(Utils.guestList.toMutableList()) }
+    val btnState = remember {
+        mutableStateOf(false)
+    }
+    val reservationState = remember {
+        mutableStateOf(true)
+    }
+
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        topBar = {
+            Surface(shadowElevation = 3.dp) {
+                AppBar(
+                    title = when (currentRoute) {
+                        "Guests" -> {
+                            "Select Guests"
+                        }
+
+                        "Confirmation" -> {
+                            "Confirmation Screen"
+                        }
+
+                        "Conflict" -> {
+                            "Conflict Screen"
+                        }
+
+                        else -> {
+                            currentRoute
+                        }
+                    },
+                    scrollBehavior = scrollBehavior,
+//                    navController = navController,
+                    navigationActions = navigationActions
+                )
+            }
+        },
+        content = { innerPadding ->
+            NavHost(
+                modifier = Modifier,
+                navController = navController,
+                startDestination = Destinations.GUESTS
+            ) {
+                composable(Destinations.GUESTS) {
+                    Guests(
+                        clients = guests,
+                        modifier = Modifier
+                            .padding(innerPadding), onValueChanged = {
+                            guests = it
+                            btnState.value = it.any { x -> x.isSelected }
+                            reservationState.value =
+                                it.none { x -> x.isSelected }
+                                        ||
+                                        it.filter { x -> x.isSelected }
+                                            .any { x -> x.hasReservation }
+                        })
+                }
+                composable(Destinations.CONFIRMATION) {
+                    Confirmation(modifier = Modifier.padding(innerPadding))
+                }
+                composable(Destinations.CONFLICT) {
+                    Conflict(modifier = Modifier.padding(innerPadding))
+                }
+            }
+        },
+        bottomBar = {
+            if (reservationState.value) {
+                Button(
+                    enabled = btnState.value,
+                    onClick = {
+                        if (guests.filter { it.isSelected }.any { it.hasReservation }) {
+                            //confirmation screen
+                            navigationActions.navigateToConfirmation()
+//                            navController.navigate("Confirmation")
+                        } else {
+                            //conflict screen
+//                            navController.navigate("Conflict")
+                            navigationActions.navigateToConflict()
+                        }
+                    }, modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(18.dp)
+                ) {
+                    Text(
+                        text = "Continue",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(6.dp),
+                        fontSize = 18.sp,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            } else {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color(0xFF00233C))
+                ) {
+                    Row(
+                        modifier = Modifier.padding(12.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Column(modifier = Modifier.weight(9f)) {
+                            Header(
+                                text = "Reservation Needed",
+                                color = Color.White
+                            )
+                            Spacer(modifier = Modifier.height(12.dp))
+                            Text(
+                                text = "Select at least one Guest that has a reservation to continue.",
+                                color = Color.White,
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight(400),
+                                lineHeight = TextUnit(24f, TextUnitType.Sp),
+                                letterSpacing = TextUnit(-.35f, TextUnitType.Sp),
+                            )
+                        }
+                        Icon(
+                            tint = Color.White,
+                            modifier = Modifier
+                                .size(24.dp)
+                                .weight(1f)
+                                .clickable {
+                                    reservationState.value = true
+                                },
+                            painter = painterResource(id = R.drawable.cancel),
+                            contentDescription = ""
+                        )
+                    }
+                }
+            }
+        }
     )
 }
