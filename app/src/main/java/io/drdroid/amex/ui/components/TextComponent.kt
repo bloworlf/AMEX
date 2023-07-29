@@ -4,11 +4,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -22,13 +24,17 @@ fun CircleText(modifier: Modifier, text: String, backgroundColor: Color) {
 //                    radius = this.size.maxDimension
 //                )
 //            },
+
         color = Color.White,
         modifier = modifier
             .background(color = backgroundColor, shape = CircleShape)
 //            .aspectRatio(1f)
 //            .circleLayout()
-            .padding(8.dp),
+//            .padding(8.dp)
+        ,
         text = text,
+        textAlign = TextAlign.Center,
+        style = MaterialTheme.typography.titleSmall
     )
 }
 

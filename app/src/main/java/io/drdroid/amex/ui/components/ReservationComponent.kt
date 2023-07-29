@@ -2,7 +2,10 @@ package io.drdroid.amex.ui.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -11,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -63,6 +67,36 @@ fun Reservations(
                 }
             }
         }
+        item{
+            InfoSection()
+        }
+    }
+}
+
+@Composable
+fun InfoSection() {
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.Top
+    ) {
+        CircleText(
+            modifier = Modifier
+                .padding(start = 16.dp)
+                .weight(1f),
+            text = "i",
+            backgroundColor = Color(0xFF132C44)
+        )
+        Spacer(modifier = Modifier.weight(.4f))
+        Text(
+            modifier = Modifier.weight(11f),
+            text = "At least one Guest in the party must have a reservation. Guests without reservations must remain in the same booking party in order to enter.",
+            maxLines = 3,
+            fontSize = TextUnit(14f, TextUnitType.Sp),
+            fontWeight = FontWeight(400),
+            letterSpacing = TextUnit(-.28f, TextUnitType.Sp),
+            lineHeight = TextUnit(21f, TextUnitType.Sp),
+            color = Color(0xFF00233C)
+        )
     }
 }
 
