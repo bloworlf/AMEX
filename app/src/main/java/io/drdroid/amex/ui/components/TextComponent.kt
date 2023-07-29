@@ -106,14 +106,16 @@ fun SearchBar(
         trailingIcon = {
             if (expanded.value) {
                 //close btn
-                IconButton(onClick = {
-                    if (text.value.isNotEmpty()) {
-                        text.value = ""
-                        onSearchQueryChanged("")
-                    } else {
-                        expanded.value = !expanded.value
-                    }
-                }) {
+                IconButton(
+                    modifier = Modifier.background(color = Color.Transparent),
+                    onClick = {
+                        if (text.value.isNotEmpty()) {
+                            text.value = ""
+                            onSearchQueryChanged("")
+                        } else {
+                            expanded.value = !expanded.value
+                        }
+                    }) {
                     Icon(
                         tint = Color.Blue,
                         imageVector = Icons.Filled.Close,
@@ -123,7 +125,10 @@ fun SearchBar(
             } else {
                 //search btn
                 keyboardController?.hide()
-                IconButton(onClick = { expanded.value = !expanded.value }) {
+                IconButton(
+                    modifier = Modifier.background(color = Color.Transparent),
+                    onClick = { expanded.value = !expanded.value }
+                ) {
                     Icon(
                         tint = Color.Blue,
 //                        painter = painterResource(id = R.drawable.search),
