@@ -18,7 +18,7 @@ The following **required** tasks are completed:
         * [x] If one of selected guests doesn't have reservation, navigate to conflict screen
 
 
-* [ ] Visual Specs
+* [x] Visual Specs
   Details the exact measurements and sizing for the display of the screen.
     * [x] **Elements**:
         * [x] Position
