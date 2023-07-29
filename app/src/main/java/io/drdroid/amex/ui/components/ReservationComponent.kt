@@ -34,10 +34,19 @@ import java.util.stream.IntStream
 @Composable
 fun Reservations(
     guests: MutableList<GuestModel>,
+    filter: String?,
     onValueChanged: (MutableList<GuestModel>) -> Unit,
     modifier: Modifier
 ) {
-    val groupedGuests = guests.groupBy { it.hasReservation }
+    val groupedGuests = if (filter.isNullOrEmpty()) {
+        guests
+    } else {
+        guests.filter {
+            it.firstName.lowercase().contains(filter.lowercase())
+                    ||
+                    it.lastName.lowercase().contains(filter.lowercase())
+        }
+    }.groupBy { it.hasReservation }
     LazyColumn(
         modifier = modifier.fillMaxHeight(),
 
@@ -67,7 +76,7 @@ fun Reservations(
                 }
             }
         }
-        item{
+        item {
             InfoSection()
         }
     }

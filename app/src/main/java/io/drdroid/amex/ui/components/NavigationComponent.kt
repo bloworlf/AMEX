@@ -26,9 +26,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -49,13 +51,15 @@ import io.drdroid.amex.ui.confirmation.Confirmation
 import io.drdroid.amex.ui.conflict.Conflict
 import io.drdroid.amex.ui.guests.Guests
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun AppBar(
     title: String,
     scrollBehavior: TopAppBarScrollBehavior,
-    navigationActions: AppNavigationActions
+    navigationActions: AppNavigationActions,
+    onSearchQueryChanged: (String) -> Unit
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     TopAppBar(
         title = {
             Text(
@@ -77,7 +81,14 @@ fun AppBar(
                     },
                 tint = Color.Blue,
                 painter = painterResource(id = R.drawable.arrow_back),
+//                imageVector = Icons.Filled.ArrowBack,
                 contentDescription = ""
+            )
+        },
+        actions = {
+            SearchBar(
+                keyboardController = keyboardController,
+                onSearchQueryChanged = onSearchQueryChanged
             )
         },
         scrollBehavior = scrollBehavior,
@@ -103,7 +114,9 @@ fun AppNavGraph(repository: Repository?) {
     val noReservationState = remember {
         mutableStateOf(false)
     }
-
+    val queryText = remember {
+        mutableStateOf("")
+    }
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -128,8 +141,10 @@ fun AppNavGraph(repository: Repository?) {
                         }
                     },
                     scrollBehavior = scrollBehavior,
-//                    navController = navController,
-                    navigationActions = navigationActions
+                    navigationActions = navigationActions,
+                    onSearchQueryChanged = {
+                        queryText.value = it
+                    }
                 )
             }
         },
@@ -141,7 +156,8 @@ fun AppNavGraph(repository: Repository?) {
             ) {
                 composable(Destinations.GUESTS) {
                     Guests(
-                        clients = guests,
+                        guests = guests,
+                        queryText = queryText.value,
                         modifier = Modifier
                             .padding(innerPadding), onValueChanged = {
                             guests = it

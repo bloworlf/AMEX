@@ -11,7 +11,8 @@ import io.drdroid.amex.ui.components.Reservations
 
 @Composable
 fun Guests(
-    clients: MutableList<GuestModel>,
+    guests: MutableList<GuestModel>,
+    queryText: String?,
     modifier: Modifier,
     onValueChanged: (MutableList<GuestModel>) -> Unit
 ) {
@@ -25,12 +26,10 @@ fun Guests(
             .fillMaxSize(),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        Box(){
-
-        }
         Reservations(
             modifier = Modifier.weight(1f, fill = true),
-            guests = clients,
+            guests = guests,
+            filter = queryText,
             onValueChanged = onValueChanged
         )
     }

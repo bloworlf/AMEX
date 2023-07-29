@@ -1,30 +1,32 @@
 package io.drdroid.amex.ui.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.layout
+import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun CircleText(modifier: Modifier, text: String, backgroundColor: Color) {
     Text(
-//        modifier = Modifier
-//            .padding(16.dp)
-//            .drawBehind {
-//                drawCircle(
-//                    color = color,
-//                    radius = this.size.maxDimension
-//                )
-//            },
-
         color = Color.White,
         modifier = modifier
             .background(color = backgroundColor, shape = CircleShape)
@@ -38,22 +40,60 @@ fun CircleText(modifier: Modifier, text: String, backgroundColor: Color) {
     )
 }
 
-fun Modifier.circleLayout() =
-    layout { measurable, constraints ->
-        // Measure the composable
-        val placeable = measurable.measure(constraints)
-
-        //get the current max dimension to assign width=height
-        val currentHeight = placeable.height
-        val currentWidth = placeable.width
-        val newDiameter = maxOf(currentHeight, currentWidth)
-
-        //assign the dimension and the center position
-        layout(newDiameter, newDiameter) {
-            // Where the composable gets placed
-            placeable.placeRelative(
-                (newDiameter - currentWidth) / 2,
-                (newDiameter - currentHeight) / 2
-            )
-        }
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun SearchBar(
+    keyboardController: SoftwareKeyboardController?,
+    onSearchQueryChanged: (String) -> Unit
+) {
+    val expanded = remember {
+        mutableStateOf(false)
     }
+    val text = remember {
+        mutableStateOf("")
+    }
+
+    OutlinedTextField(
+        colors = TextFieldDefaults.colors(
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent,
+            unfocusedContainerColor = Color.White,
+            focusedContainerColor = Color.White
+        ),
+        value = text.value,
+        onValueChange = {
+            text.value = it
+            onSearchQueryChanged(it)
+        },
+        label = {
+            Text("Search")
+        },
+        modifier = if (expanded.value) {
+            Modifier.fillMaxWidth()
+        } else {
+            Modifier.width(32.dp)
+        }
+            .background(color = Color.Transparent),
+        trailingIcon = {
+            if (expanded.value) {
+                //close btn
+                IconButton(onClick = { expanded.value = !expanded.value }) {
+                    Icon(
+                        imageVector = Icons.Filled.Close,
+                        contentDescription = ""
+                    )
+                }
+            } else {
+                //search btn
+                keyboardController?.hide()
+                IconButton(onClick = { expanded.value = !expanded.value }) {
+                    Icon(
+//                        painter = painterResource(id = R.drawable.search),
+                        imageVector = Icons.Filled.Search,
+                        contentDescription = ""
+                    )
+                }
+            }
+        }
+    )
+}
