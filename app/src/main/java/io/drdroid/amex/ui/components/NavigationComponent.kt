@@ -108,8 +108,8 @@ fun AppNavGraph(
     val btnState = remember {
         mutableStateOf(false)
     }
-    val reservationState = remember {
-        mutableStateOf(true)
+    val noReservationState = remember {
+        mutableStateOf(false)
     }
 
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -154,11 +154,11 @@ fun AppNavGraph(
                             .padding(innerPadding), onValueChanged = {
                             guests = it
                             btnState.value = it.any { x -> x.isSelected }
-                            reservationState.value =
-                                it.none { x -> x.isSelected }
-                                        ||
-                                        it.filter { x -> x.isSelected }
-                                            .any { x -> x.hasReservation }
+//                            noReservationState.value =
+//                                it.none { x -> x.isSelected }
+//                                        ||
+//                                        it.filter { x -> x.isSelected }
+//                                            .any { x -> x.hasReservation }
                         })
                 }
                 composable(Destinations.CONFIRMATION) {
@@ -170,18 +170,28 @@ fun AppNavGraph(
             }
         },
         bottomBar = {
-            if (reservationState.value) {
+            if (!noReservationState.value) {
                 Button(
                     enabled = btnState.value,
                     onClick = {
-                        if (guests.filter { it.isSelected }.any { it.hasReservation }) {
+//                        if (guests.filter { it.isSelected }.any { it.hasReservation }) {
+//                            //confirmation screen
+//                            navigationActions.navigateToConfirmation()
+////                            navController.navigate("Confirmation")
+//                        } else {
+//                            //conflict screen
+////                            navController.navigate("Conflict")
+//                            navigationActions.navigateToConflict()
+//                        }
+                        if (guests.filter { it.isSelected }.none { it.hasReservation }) {
+                            //display snack
+                            noReservationState.value = true
+                        } else if (guests.filter { it.isSelected }.any { !it.hasReservation }) {
+                            //conflict screen
+                            navigationActions.navigateToConflict()
+                        } else {
                             //confirmation screen
                             navigationActions.navigateToConfirmation()
-//                            navController.navigate("Confirmation")
-                        } else {
-                            //conflict screen
-//                            navController.navigate("Conflict")
-                            navigationActions.navigateToConflict()
                         }
                     }, modifier = Modifier
                         .fillMaxWidth()
@@ -228,7 +238,7 @@ fun AppNavGraph(
                                 .size(24.dp)
                                 .weight(1f)
                                 .clickable {
-                                    reservationState.value = true
+                                    noReservationState.value = false
                                 },
                             painter = painterResource(id = R.drawable.cancel),
                             contentDescription = ""
