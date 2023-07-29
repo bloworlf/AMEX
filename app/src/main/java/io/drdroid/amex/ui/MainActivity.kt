@@ -5,29 +5,31 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import dagger.hilt.android.AndroidEntryPoint
+import io.drdroid.amex.data.repo.Repository
 import io.drdroid.amex.ui.components.AppNavGraph
 import io.drdroid.amex.ui.theme.AMEXTheme
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var repository: Repository
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             AMEXTheme {
-                MainScreen()
+                AppNavGraph(repository)
             }
         }
     }
-}
-
-@Composable
-fun MainScreen() {
-    AppNavGraph()
 }
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     AMEXTheme {
-        MainScreen()
+        AppNavGraph(null)
     }
 }

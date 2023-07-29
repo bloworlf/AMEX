@@ -42,12 +42,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import io.drdroid.amex.R
+import io.drdroid.amex.data.repo.Repository
 import io.drdroid.amex.navigation.AppNavigationActions
 import io.drdroid.amex.navigation.Destinations
 import io.drdroid.amex.ui.confirmation.Confirmation
 import io.drdroid.amex.ui.conflict.Conflict
-import io.drdroid.amex.ui.select_guests.Guests
-import io.drdroid.amex.utils.Utils
+import io.drdroid.amex.ui.guests.Guests
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -88,16 +88,15 @@ fun AppBar(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppNavGraph(
-    navController: NavHostController = rememberNavController()
-) {
+fun AppNavGraph(repository: Repository?) {
+    val navController: NavHostController = rememberNavController()
     val currentNavBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentNavBackStackEntry?.destination?.route ?: Destinations.GUESTS
     val navigationActions = remember(navController) {
         AppNavigationActions(navController)
     }
 
-    var guests by remember { mutableStateOf(Utils.guestList.toMutableList()) }
+    var guests by remember { mutableStateOf(repository!!.getGuestList().toMutableList()) }
     val btnState = remember {
         mutableStateOf(false)
     }
@@ -176,22 +175,42 @@ fun AppNavGraph(
 ////                            navController.navigate("Conflict")
 //                            navigationActions.navigateToConflict()
 //                        }
-                        if (guests.filter { it.isSelected }.none { it.hasReservation }) {
-                            //display snack
-                            noReservationState.value = true
-                        } else if (guests.filter { it.isSelected }.any { !it.hasReservation }) {
-                            //conflict screen
-                            navigationActions.navigateToConflict()
+                        if (currentRoute == "Conflict") {
+                            navigationActions.navigateToGuest()
                         } else {
-                            //confirmation screen
-                            navigationActions.navigateToConfirmation()
+                            if (guests.filter { it.isSelected }.none { it.hasReservation }) {
+                                //display snack
+                                noReservationState.value = true
+                            } else if (guests.filter { it.isSelected }.any { !it.hasReservation }) {
+                                //conflict screen
+                                navigationActions.navigateToConflict()
+                            } else {
+                                //confirmation screen
+                                navigationActions.navigateToConfirmation()
+                            }
                         }
                     }, modifier = Modifier
                         .fillMaxWidth()
                         .padding(18.dp)
                 ) {
                     Text(
-                        text = "Continue",
+                        text = when (currentRoute) {
+//                            "Guests" -> {
+//                                "Continue"
+//                            }
+
+                            "Confirmation" -> {
+                                "Done"
+                            }
+
+                            "Conflict" -> {
+                                "Go Back"
+                            }
+
+                            else -> {
+                                "Continue"
+                            }
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(6.dp),
