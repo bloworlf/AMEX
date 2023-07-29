@@ -17,21 +17,24 @@ object Destinations {
 
 class AppNavigationActions(private val navController: NavHostController) {
 
-    fun navigateToGuest() {
+    fun navigateToGuest(): String {
         navController.navigate(GUESTS) {
             popUpTo(GUESTS)
         }
+        return GUESTS
     }
 
-    fun navigateToConfirmation() {
+    fun navigateToConfirmation(): String {
         navController.navigate(CONFIRMATION) {
             popUpTo(CONFIRMATION)
         }
+        return CONFIRMATION
     }
 
-    fun navigateToConflict() {
+    fun navigateToConflict(): String {
         navController.navigate(CONFLICT) {
             popUpTo(CONFLICT)
         }
+        return CONFLICT
     }
 }

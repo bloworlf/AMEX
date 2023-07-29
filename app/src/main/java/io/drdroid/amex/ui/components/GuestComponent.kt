@@ -30,12 +30,13 @@ fun GuestItem(
     }
     Row(
         modifier = Modifier
+            .background(Color.White)
             .padding(start = 16.dp, end = 16.dp)
             .clickable {
-            checked.value = !checked.value
-            guestModel.isSelected = !guestModel.isSelected
-            onSelected(guestModel)
-        },
+                checked.value = !checked.value
+                guestModel.isSelected = !guestModel.isSelected
+                onSelected(guestModel)
+            },
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {

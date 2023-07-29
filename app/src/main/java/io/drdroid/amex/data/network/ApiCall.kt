@@ -1,9 +1,10 @@
-package io.drdroid.amex.data.repo
+package io.drdroid.amex.data.network
 
 import io.drdroid.amex.data.model.client.GuestModel
-import kotlin.random.Random
+import retrofit2.http.GET
 
-interface Repository {
+interface ApiCall {
 
+    @GET
     suspend fun getGuestList(max: Int): List<GuestModel>
 }

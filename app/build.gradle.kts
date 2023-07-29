@@ -62,8 +62,13 @@ dependencies {
     implementation("androidx.compose.ui:ui:1.4.3")
     implementation("androidx.compose.material:material-icons-extended:1.6.0-alpha02")
     implementation("androidx.compose.ui:ui-graphics:1.4.3")
+    implementation("androidx.compose.runtime:runtime-livedata:1.4.3")
     implementation("androidx.compose.ui:ui-tooling-preview:1.4.3")
     implementation("androidx.compose.material3:material3:1.1.1")
+
+    //Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
     //navigation
     implementation("androidx.navigation:navigation-compose:2.6.0")
@@ -80,4 +85,10 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.4.3")
     debugImplementation("androidx.compose.ui:ui-tooling:1.4.3")
     debugImplementation("androidx.compose.ui:ui-test-manifest:1.4.3")
+
+    //mockito
+    testImplementation("org.mockito:mockito-core:3.12.4")
+//    androidTestImplementation 'org.mockito:mockito-android:2.2.0'
+    testImplementation("org.mockito:mockito-inline:3.11.2")
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
 }

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -15,12 +16,18 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.CustomAccessibilityAction
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.customActions
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
@@ -33,53 +40,75 @@ import java.util.stream.IntStream
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Reservations(
-    guests: MutableList<GuestModel>,
+    guests: MutableList<GuestModel>?,
     filter: String?,
     onValueChanged: (MutableList<GuestModel>) -> Unit,
     modifier: Modifier
 ) {
-    val groupedGuests = if (filter.isNullOrEmpty()) {
-        guests
-    } else {
-        guests.filter {
-            it.firstName.lowercase().contains(filter.lowercase())
-                    ||
-                    it.lastName.lowercase().contains(filter.lowercase())
-        }
-    }.groupBy { it.hasReservation }
-    LazyColumn(
-        modifier = modifier.fillMaxHeight(),
-
+    if (guests == null) {
+        //display a loading dialog
+        Box(
+            modifier = modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center,
         ) {
-        groupedGuests.forEach { (hasReservation, rGuests) ->
-            stickyHeader {
-                Header(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = if (hasReservation) {
-                        "These Guests Have Reservations"
-                    } else {
-                        "These Guests Need Reservations"
-                    },
-                    backgroundColor = Color.White
-                )
+            CircularProgressIndicator()
+        }
+    } else {
+        val groupedGuests = if (filter.isNullOrEmpty()) {
+            guests
+        } else {
+            guests.filter {
+                it.firstName.lowercase().contains(filter.lowercase())
+                        ||
+                        it.lastName.lowercase().contains(filter.lowercase())
             }
-            items(rGuests) { guest ->
-                // Display each guest as a list item
-                GuestItem(guestModel = guest) {
-                    val position = IntStream.range(0, guests.size)
-                        .filter { i: Int ->
-                            guests[i].id == guest.id
-                        }
-                        .findFirst().orElse(-1)
-                    guests[position] = it
-                    onValueChanged(guests)
+        }.groupBy { it.hasReservation }
+
+        LazyColumn(
+            modifier = modifier
+                .fillMaxHeight(),
+//            .clearAndSetSemantics {
+//                contentDescription = ""
+//                stateDescription = ""
+//                customActions= listOf(
+//                    CustomAccessibilityAction(
+//                        label = "Select/Deselect",
+//                        action = { false }
+//                    )
+//                )
+//            }
+        ) {
+            groupedGuests.forEach { (hasReservation, rGuests) ->
+                stickyHeader {
+                    Header(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = if (hasReservation) {
+                            "These Guests Have Reservations"
+                        } else {
+                            "These Guests Need Reservations"
+                        },
+                        backgroundColor = Color.White
+                    )
+                }
+                items(rGuests) { guest ->
+                    // Display each guest as a list item
+                    GuestItem(guestModel = guest) {
+                        val position = IntStream.range(0, guests.size)
+                            .filter { i: Int ->
+                                guests[i].id == guest.id
+                            }
+                            .findFirst().orElse(-1)
+                        guests[position] = it
+                        onValueChanged(guests)
+                    }
                 }
             }
-        }
-        item {
-            InfoSection()
+            item {
+                InfoSection()
+            }
         }
     }
+
 }
 
 @Composable
@@ -97,7 +126,9 @@ fun InfoSection() {
         )
         Spacer(modifier = Modifier.weight(.4f))
         Text(
-            modifier = Modifier.weight(11f),
+            modifier = Modifier
+                .weight(11f)
+                .padding(bottom = 12.dp),
             text = "At least one Guest in the party must have a reservation. Guests without reservations must remain in the same booking party in order to enter.",
             maxLines = 3,
             fontSize = TextUnit(14f, TextUnitType.Sp),
@@ -112,9 +143,9 @@ fun InfoSection() {
 @Composable
 fun Header(
     text: String,
+    modifier: Modifier = Modifier,
     textColor: Color = Color(0xFF00233C),
     backgroundColor: Color = Color.Transparent,
-    modifier: Modifier = Modifier
 ) {
     Surface(
         color = backgroundColor,

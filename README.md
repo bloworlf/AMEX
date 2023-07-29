@@ -55,6 +55,11 @@ The following **optional** tasks are completed:
 * [x] Use Dependency Injection
 * [x] Use Navigation Component
 
+
+The following **optional** tasks are completed:
+* [x] Add a search menu item to the AppBar
+  * [x] Filter the list using the search bar
+
 ## Screenshots
 
 ## License

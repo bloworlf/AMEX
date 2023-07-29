@@ -117,7 +117,7 @@ fun SearchBar(
                     Icon(
                         tint = Color.Blue,
                         imageVector = Icons.Filled.Close,
-                        contentDescription = ""
+                        contentDescription = "Clear/close search view"
                     )
                 }
             } else {
@@ -128,7 +128,7 @@ fun SearchBar(
                         tint = Color.Blue,
 //                        painter = painterResource(id = R.drawable.search),
                         imageVector = Icons.Filled.Search,
-                        contentDescription = ""
+                        contentDescription = "Open search view"
                     )
                 }
             }

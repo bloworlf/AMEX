@@ -11,7 +11,7 @@ import io.drdroid.amex.ui.components.Reservations
 
 @Composable
 fun Guests(
-    guests: MutableList<GuestModel>,
+    guests: MutableList<GuestModel>?,
     queryText: String?,
     modifier: Modifier,
     onValueChanged: (MutableList<GuestModel>) -> Unit
