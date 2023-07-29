@@ -7,19 +7,33 @@ import kotlin.random.Random
 
 class RepositoryImpl @Inject constructor() : Repository {
 
-    override fun getGuestList(): List<GuestModel> = guestList
+    override fun getGuestList(max: Int): List<GuestModel> {
+        var amount = max
+        if (amount < 1) {
+            amount = 50
+        }
+        return (1..amount).map { index ->
+            GuestModel(
+                id = index,
+                firstName = getRandomFirstName(),
+                lastName = getRandomLastName(),
+                hasReservation = random.nextBoolean(),
+                isSelected = false
+            )
+        }
+    }
 
     private val random = Random(System.currentTimeMillis())
 
-    private val guestList: List<GuestModel> = (1..50).map { index ->
-        GuestModel(
-            id = index,
-            firstName = getRandomFirstName(),
-            lastName = getRandomLastName(),
-            hasReservation = random.nextBoolean(),
-            isSelected = false
-        )
-    }
+//    private val guestList: List<GuestModel> = (1..50).map { index ->
+//        GuestModel(
+//            id = index,
+//            firstName = getRandomFirstName(),
+//            lastName = getRandomLastName(),
+//            hasReservation = random.nextBoolean(),
+//            isSelected = false
+//        )
+//    }
 
     private fun getRandomFirstName(): String {
         val firstNames = listOf(

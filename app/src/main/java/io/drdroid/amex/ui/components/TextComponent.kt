@@ -1,5 +1,8 @@
 package io.drdroid.amex.ui.components
 
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
@@ -9,7 +12,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -21,12 +23,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.SoftwareKeyboardController
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -69,7 +73,9 @@ fun SearchBar(
             } else {
                 Color.Transparent
             },
-            focusedContainerColor = Color.White
+            focusedContainerColor = Color.White,
+            focusedTextColor = Color(0xFF132C44),
+            unfocusedTextColor = Color(0xFF132C44),
         ),
         value = text.value,
         onValueChange = {
@@ -77,13 +83,25 @@ fun SearchBar(
             onSearchQueryChanged(it)
         },
         label = {
-            Text("Search")
+            Text(
+                text = "Search",
+                letterSpacing = TextUnit(0f, TextUnitType.Sp),
+                lineHeight = TextUnit(24f, TextUnitType.Sp),
+                color = Color(0xFF132C44),
+                fontWeight = FontWeight(400),
+            )
         },
         modifier = if (expanded.value) {
             Modifier.fillMaxWidth()
         } else {
             Modifier.width(32.dp)
         }
+            .animateContentSize(
+                animationSpec = tween(
+                    durationMillis = 300,
+                    easing = LinearOutSlowInEasing
+                )
+            )
             .background(color = Color.Transparent),
         trailingIcon = {
             if (expanded.value) {
@@ -97,6 +115,7 @@ fun SearchBar(
                     }
                 }) {
                     Icon(
+                        tint = Color.Blue,
                         imageVector = Icons.Filled.Close,
                         contentDescription = ""
                     )
@@ -106,6 +125,7 @@ fun SearchBar(
                 keyboardController?.hide()
                 IconButton(onClick = { expanded.value = !expanded.value }) {
                     Icon(
+                        tint = Color.Blue,
 //                        painter = painterResource(id = R.drawable.search),
                         imageVector = Icons.Filled.Search,
                         contentDescription = ""

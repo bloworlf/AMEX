@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Sort
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -51,7 +53,7 @@ import io.drdroid.amex.ui.confirmation.Confirmation
 import io.drdroid.amex.ui.conflict.Conflict
 import io.drdroid.amex.ui.guests.Guests
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppBar(
     title: String,
@@ -90,10 +92,34 @@ fun AppBar(
                 keyboardController = keyboardController,
                 onSearchQueryChanged = onSearchQueryChanged
             )
+//            FilterAction()
         },
         scrollBehavior = scrollBehavior,
         modifier = Modifier
             .background(color = Color.White),
+    )
+}
+
+@Composable
+fun FilterAction() {
+    val showDialog = remember { mutableStateOf(false) }
+    if (showDialog.value) {
+        CustomDialog(
+            modifier = Modifier,
+            positiveText = "",
+            negativeText = "",
+            onPositiveClick = {},
+            onNegativeClick = {},
+            onDismiss = {}
+        )
+    }
+    Icon(
+        imageVector = Icons.Filled.Sort,
+        contentDescription = "",
+        tint = Color.Blue,
+        modifier = Modifier.clickable {
+            showDialog.value = true
+        }
     )
 }
 
