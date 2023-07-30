@@ -86,6 +86,9 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling:1.4.3")
     debugImplementation("androidx.compose.ui:ui-test-manifest:1.4.3")
 
+    //test coroutine
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1")
+
     //mockito
     testImplementation("org.mockito:mockito-core:3.12.4")
 //    androidTestImplementation 'org.mockito:mockito-android:2.2.0'

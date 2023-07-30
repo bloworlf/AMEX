@@ -23,7 +23,13 @@ class GuestViewModel @Inject constructor(
     fun getGuestList(max: Int = Random(50).nextInt()) {
         CoroutineScope(Dispatchers.Main).launch {
             val value = repository.getGuestList(max)
-            liveData.postValue(value.toMutableList())
+            liveData.postValue(
+                try {
+                    value.toMutableList()
+                } catch (e: Exception) {
+                    mutableListOf()
+                }
+            )
         }
     }
 }
