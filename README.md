@@ -61,21 +61,21 @@ The following **optional** tasks are completed:
 
 ## Screenshots
 
-(Home)[https://github.com/bloworlf/AMEX/blob/main/screens/home.png]
+[Home](https://github.com/bloworlf/AMEX/blob/main/screens/home.png)
 
-(Filter)[https://github.com/bloworlf/AMEX/blob/main/screens/filter.png]
+[Filter](https://github.com/bloworlf/AMEX/blob/main/screens/filter.png)
 
-(Select guest)[https://github.com/bloworlf/AMEX/blob/main/screens/select_guest.png]
+[Select guest](https://github.com/bloworlf/AMEX/blob/main/screens/select_guest.png)
 
-(Scrolling)[https://github.com/bloworlf/AMEX/blob/main/screens/scroll.png]
+[Scrolling](https://github.com/bloworlf/AMEX/blob/main/screens/scroll.png)
 
-(End of list)[https://github.com/bloworlf/AMEX/blob/main/screens/eol.png]
+[End of list](https://github.com/bloworlf/AMEX/blob/main/screens/eol.png)
 
-(Reservation needed)[https://github.com/bloworlf/AMEX/blob/main/screens/reservation_needed.png]
+[Reservation needed](https://github.com/bloworlf/AMEX/blob/main/screens/reservation_needed.png)
 
-(Conflict)[https://github.com/bloworlf/AMEX/blob/main/screens/conflict.png]
+[Conflict](https://github.com/bloworlf/AMEX/blob/main/screens/conflict.png)
 
-(Confirmation)[https://github.com/bloworlf/AMEX/blob/main/screens/confirmation.png]
+[Confirmation](https://github.com/bloworlf/AMEX/blob/main/screens/confirmation.png)
 
 ## License
 
