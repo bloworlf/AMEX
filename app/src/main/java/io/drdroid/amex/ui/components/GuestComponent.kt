@@ -14,6 +14,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
@@ -30,6 +33,15 @@ fun GuestItem(
     }
     Row(
         modifier = Modifier
+            .semantics {
+                contentDescription = "${guestModel.firstName} ${guestModel.lastName} ${
+                    if (checked.value) {
+                        "selected"
+                    } else {
+                        "not selected"
+                    }
+                }"
+            }
             .background(Color.White)
             .padding(start = 16.dp, end = 16.dp)
             .clickable {
@@ -42,6 +54,13 @@ fun GuestItem(
     ) {
         Checkbox(
             modifier = Modifier
+                .semantics {
+                    contentDescription = if (checked.value) {
+                        "Press to select ${guestModel.firstName} ${guestModel.lastName}"
+                    } else {
+                        "Press to deselect ${guestModel.firstName} ${guestModel.lastName}"
+                    }
+                }
 //                .size(width = 16.dp, height = 16.dp)
 //                .background(Color.White)
                 .weight(1f),

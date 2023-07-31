@@ -40,10 +40,7 @@ The following **required** tasks are completed:
         * [x] Footer Element
 
 
-* [ ] Accessibility
-    * [ ] Details the accessibility specs of how responses should be communicated to users with
-      TalkBack on. We specifically support TalkBack, so you won’t be evaluated on other speech
-      readers.
+* [x] Accessibility
 
 The following **optional** tasks are completed:
 
