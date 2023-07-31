@@ -49,7 +49,7 @@ The following **optional** tasks are completed:
 
 * [x] Code using Jetpack Compose
 * [x] Error handling
-* [ ] Implement testing
+* [x] Implement testing
 * [x] Easy logic to add/remove guests
 * [x] Use a design pattern (MVP, MVVM...)
 * [x] Use Dependency Injection
@@ -59,6 +59,8 @@ The following **optional** tasks are completed:
 The following **optional** tasks are completed:
 * [x] Add a search menu item to the AppBar
   * [x] Filter the list using the search bar
+* [x] Use of animations
+* [x] Mock network response
 
 ## Screenshots
 

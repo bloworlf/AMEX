@@ -52,8 +52,10 @@ object Utils {
 
     private fun getRandomFirstName(): String {
         val firstNames = listOf(
-            "John", "Alice", "Michael", "Emily", "David", "Sophia", "Robert", "Emma",
-            "William", "Olivia", "James", "Ava", "Joseph", "Isabella", "Daniel", "Mia"
+            "John", "Michael", "Emily", "Robert",
+            "William", "Olivia", "James", "Ava", "Joseph", "Daniel", "Mia",
+            "Alice", "Bob", "Charlie", "David", "Emma", "Frank", "Grace", "Henry", "Isabella", "Jack",
+            "Lily", "Mason", "Nora", "Oliver", "Penelope", "Quinn", "Ryan", "Sophia", "Thomas", "Uma",
             // Add more names as needed
         )
         return firstNames[random.nextInt(firstNames.size)]
@@ -61,8 +63,10 @@ object Utils {
 
     private fun getRandomLastName(): String {
         val lastNames = listOf(
+            "Adams", "Clark", "Evans", "Foster", "Garcia", "Harris", "Irwin", "Johnson",
+            "King", "Martinez", "Nguyen", "O'Connor", "Parker", "Quinn", "Roberts", "Taylor",
             "Smith", "Johnson", "Williams", "Jones", "Brown", "Davis", "Miller", "Wilson",
-            "Taylor", "Clark", "White", "Lewis", "Lee", "Walker", "Hall", "Allen"
+            "Taylor", "Clark", "White", "Lewis", "Lee", "Walker", "Hall", "Allen",
             // Add more names as needed
         )
         return lastNames[random.nextInt(lastNames.size)]
