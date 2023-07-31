@@ -63,7 +63,7 @@ The following **optional** tasks are completed:
 
 (Home)[https://github.com/bloworlf/AMEX/blob/main/screens/home.png]
 
-(Filter)[https://github.com/bloworlf/AMEX/blob/main/screens/confirmation.png]
+(Filter)[https://github.com/bloworlf/AMEX/blob/main/screens/filter.png]
 
 (Select guest)[https://github.com/bloworlf/AMEX/blob/main/screens/select_guest.png]
 
